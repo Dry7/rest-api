@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+
+  postgres:
+    image: postgres:12.1-alpine
+    volumes:
+      - ./docker/postgres/init_testing_db.sql:/docker-entrypoint-initdb.d/init_testing_db.sql
+    environment:
+      POSTGRES_USER: rest-api
+      POSTGRES_PASSWORD: rest-api
+      POSTGRES_DB: rest-api
+
+  php-fpm:
+    build: ./docker/php
+    volumes:
+      - .:/var/www/rest-api
+    working_dir: /var/www/rest-api
+
+  nginx:
+    image: nginx:1.17.7-alpine
+    volumes:
+      - .:/var/www/rest-api
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php-fpm
+      - postgres
+
+  composer:
+    build: ./docker/composer
+    command: install
+    volumes:
+      - .:/app
+
+  phpunit:
+    build: ./docker/php
+    command: vendor/bin/phpunit --coverage-html=storage/coverage
+    working_dir: /var/www/rest-api
+    volumes:
+      - .:/var/www/rest-api
+    links:
+      - composer
