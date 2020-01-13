@@ -14,6 +14,6 @@ $request = Request::createFromGlobals();
 $action = parse_url($request->server->get('REQUEST_URI'), PHP_URL_PATH);
 
 switch ($action) {
-    case '/api/products/create';
+    case '/api/v1/products/create';
         echo $application->call(CreateProducts::class);
 }

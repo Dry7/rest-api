@@ -2,6 +2,11 @@
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
-$config = require __DIR__ . '/../bootstrap/app.php';
+require __DIR__ . '/../bootstrap/app.php';
 
-return ConsoleRunner::createHelperSet($config);
+use App\Application;
+use Doctrine\ORM\EntityManagerInterface;
+
+Application::createDI();
+
+return ConsoleRunner::createHelperSet(Application::getDI()->get(EntityManagerInterface::class));

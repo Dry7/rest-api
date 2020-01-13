@@ -1,0 +1,4 @@
+Create migration
+```
+docker-compose exec php-fpm vendor/bin/doctrine-migrations migrations:diff --configuration=config/migrations.php
+```

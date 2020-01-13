@@ -22,7 +22,7 @@ class DoctrineService
     public function build()
     {
         $finder = new Finder();
-        $finder->in('../app/');
+        $finder->in(__DIR__ . '/../../app');
 
         return EntityManager::create($this->config->get('database'), $this->buildConfig());
     }
