@@ -59,4 +59,13 @@ class Product
     {
         $this->price = $price;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id ?? null,
+            'name' => $this->name,
+            'price' => $this->price,
+        ];
+    }
 }

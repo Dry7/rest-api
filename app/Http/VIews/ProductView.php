@@ -17,10 +17,6 @@ class ProductView implements \JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return [
-            'id' => $this->product->getId(),
-            'name' => $this->product->getName(),
-            'price' => $this->product->getPrice(),
-        ];
+        return $this->product->toArray();
     }
 }
