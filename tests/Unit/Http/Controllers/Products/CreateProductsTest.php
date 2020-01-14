@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CreateProductsTest extends TestCase
 {
-    public function testRunService()
+    public function testInvoke()
     {
         // arrange
         /** @var Request $request */
