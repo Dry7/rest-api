@@ -16,7 +16,7 @@ class PaymentService
     public function __construct(Client $client, string $endpoint = null)
     {
         $this->client = $client;
-        $this->endpoint ??= $endpoint;
+        $this->endpoint = $endpoint ?? $this->endpoint;
     }
 
     public function pay(Order $order): bool
