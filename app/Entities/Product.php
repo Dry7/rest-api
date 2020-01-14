@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Entities;
 
 /**
- * @Entity
+ * @Entity(repositoryClass="App\Repositories\ProductRepository")
  * @Table(name="products")
 */
 class Product
@@ -23,6 +23,12 @@ class Product
 
     /** @Column(type="decimal", precision=10, scale=2) */
     private float $price;
+
+    public function __construct(string $name, float $price)
+    {
+        $this->setName($name);
+        $this->setPrice($price);
+    }
 
     public function getId(): int
     {

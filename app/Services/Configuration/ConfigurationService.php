@@ -21,7 +21,7 @@ class ConfigurationService implements ConfigurationInterface
                     return $default;
                 }
             } elseif (is_file($dirname . $path . '.php')) {
-                $data = require_once $dirname . $path . '.php';
+                $data = require $dirname . $path . '.php';
             } elseif (is_dir($dirname . $path)) {
                 $dirname .= $path . '/';
             } else {
