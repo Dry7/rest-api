@@ -35,6 +35,8 @@ services:
     build: ./docker/php
     command: vendor/bin/phpunit --coverage-html=storage/coverage
     working_dir: /var/www/rest-api
+    env_file:
+      - ./docker/php/env/testing.env
     volumes:
       - .:/var/www/rest-api
     links:

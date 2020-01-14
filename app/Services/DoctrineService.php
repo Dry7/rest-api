@@ -25,6 +25,6 @@ class DoctrineService
 
     private function buildConfig(): Configuration
     {
-        return Setup::createAnnotationMetadataConfiguration([__DIR__ . '/../../app/Entities'], true);
+        return Setup::createAnnotationMetadataConfiguration([__DIR__ . '/../../app/Entities']);
     }
 }
