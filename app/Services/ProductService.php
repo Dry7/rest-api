@@ -21,16 +21,21 @@ class ProductService
         $this->faker = $faker;
     }
 
-    public function createFakeProducts($count = self::FAKE_PRODUCTS): void
+    public function createFakeProducts($count = self::FAKE_PRODUCTS): \Traversable
     {
         for ($i = 0; $i < $count; ++$i) {
-            $this->entityManager->persist($this->createFakeProduct());
+            $product = $this->createFakeProduct();
+            $this->entityManager->persist($product);
+            yield $product;
         }
         $this->entityManager->flush();
     }
 
     private function createFakeProduct(): Product
     {
-        return new Product($this->faker->sentence(2), $this->faker->randomFloat(2, 1, 200));
+        return new Product(
+            $this->faker->sentence(2),
+            $this->faker->randomFloat(2, 1, 200)
+        );
     }
 }
