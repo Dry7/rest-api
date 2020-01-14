@@ -12,7 +12,6 @@ use DI\Container;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Faker\Generator;
-use Symfony\Component\HttpFoundation\Request;
 
 class Application
 {
