@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Entities;
+namespace Tests\Unit\Http\Views;
 
 use App\Http\Views\SuccessResponse;
 use PHPUnit\Framework\TestCase;

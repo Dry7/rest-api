@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Http\Controllers\Products;
+namespace Tests\Unit\Http\Controllers\Orders;
 
 use App\Entities\Order;
 use App\Entities\Product;
 use App\Exceptions\OrderException;
-use App\Http\Controllers\Orders\CreateOrder;
 use App\Http\Controllers\Orders\PayOrder;
 use App\Http\Views\SuccessOrderPay;
 use App\Request;

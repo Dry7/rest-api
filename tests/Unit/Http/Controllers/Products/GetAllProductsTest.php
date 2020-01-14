@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Http\Controllers\Products;
+namespace Tests\Unit\Http\Controllers\Products;
 
 use App\Entities\Product;
 use App\Http\Controllers\Products\GetAllProducts;

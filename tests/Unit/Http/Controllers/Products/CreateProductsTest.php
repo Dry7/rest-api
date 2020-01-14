@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Http\Controllers\Products;
+namespace Tests\Unit\Http\Controllers\Products;
 
 use App\Http\Controllers\Products\CreateProducts;
 use App\Http\Views\SuccessResponse;

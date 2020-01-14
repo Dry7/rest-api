@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Http\Controllers\Products;
+namespace Tests\Unit\Services;
 
 use App\Services\Configuration\ConfigurationInterface;
 use App\Services\DoctrineService;

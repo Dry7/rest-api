@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Http\Controllers\Products;
+namespace Tests\Unit\Http\Controllers\Orders;
 
 use App\Entities\Product;
 use App\Exceptions\OrderException;
