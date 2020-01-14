@@ -6,6 +6,7 @@ use App\Application;
 use App\Http\Controllers\Products\CreateProducts;
 use App\Http\Controllers\Products\GetAllProducts;
 use App\Http\Controllers\Orders\CreateOrder;
+use App\Http\Controllers\Orders\PayOrder;
 use Symfony\Component\HttpFoundation\Request;
 
 Application::createDI();
@@ -32,6 +33,9 @@ function routes(\DI\Container $application, Request $request)
 
                 case '/api/v1/orders';
                     return $application->call(CreateOrder::class);
+
+                case '/api/v1/orders/pay';
+                    return $application->call(PayOrder::class);
             }
             break;
     }
