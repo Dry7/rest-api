@@ -38,3 +38,8 @@ Routes
 2. `POST /api/v1/products/create` Create fake products
 3. `POST /api/v1/orders` `POST body = [1,2,3]` Create order
 4. `POST /api/v1/orders/pay` `POST body {"id": 1,"sum": 9.99}` Pay order
+
+Code coverage report (100%)
+```$xslt
+/storage/coverage
+```
