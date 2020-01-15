@@ -7,62 +7,41 @@ namespace Tests\Unit\Http\Controllers\Orders;
 use App\Entities\Product;
 use App\Exceptions\OrderException;
 use App\Http\Controllers\Orders\CreateOrder;
-use App\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
-use PHPUnit\Framework\TestCase;
+use Tests\Unit\TestCase;
 
 class CreateOrderTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function testEmptyProducts(): void
     {
         // arrange
-        /** @var Request $request */
-        $request = \Mockery::mock(Request::class)
-            ->shouldReceive('jsonContent')
-            ->andReturnNull()
-            ->once()
-            ->getMock();
-        $entityManager = \Mockery::mock(EntityManagerInterface::class);
+        $this->mockJsonContent(null);
 
         // assert
         self::expectException(OrderException::class);
         self::expectExceptionMessage('You must choose products');
 
         // act
-        (new CreateOrder())($request, $entityManager);
+        (new CreateOrder())($this->request, $this->entityManager);
     }
 
     public function testNotFoundProducts(): void
     {
         // arrange
         $product = new Product('Name', 100.00);
-        /** @var Request $request */
-        $request = \Mockery::mock(Request::class)
-            ->shouldReceive('jsonContent')
-            ->andReturn([1, 'test', 2344234])
-            ->once()
-            ->getMock();
-        $entityManager = \Mockery::mock(EntityManagerInterface::class)
-            ->shouldReceive('getRepository')
-            ->with(Product::class)
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ObjectRepository::class)
-                ->shouldReceive('findByIDs')
-                ->with(...[1, null, 2344234])
-                ->once()
-                ->andReturn([$product])
-                ->getMock()
-            )
-            ->getMock();
+        $this->mockJsonContent([1, 'test', 2344234]);
+        $this->mockFindByIDs([1, null, 2344234], [$product]);
 
         // assert
         self::expectException(OrderException::class);
         self::expectExceptionMessage('Some products not found');
 
         // act
-        (new CreateOrder())($request, $entityManager);
+        (new CreateOrder())($this->request, $this->entityManager);
     }
 
     public function testInvoke(): void
@@ -72,30 +51,14 @@ class CreateOrderTest extends TestCase
             new Product('Name 1', 33.00),
             new Product('Name 2', 23.00),
         ];
-        /** @var Request $request */
-        $request = \Mockery::mock(Request::class)
-            ->shouldReceive('jsonContent')
-            ->andReturn([1, 2])
-            ->once()
-            ->getMock();
-        $entityManager = \Mockery::mock(EntityManagerInterface::class)
-            ->shouldReceive('getRepository')
-            ->with(Product::class)
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ObjectRepository::class)
-                ->shouldReceive('findByIDs')
-                ->with(...[1, 2])
-                ->once()
-                ->andReturn($products)
-                ->getMock()
-            )
-            ->getMock()
+        $this->mockJsonContent([1, 2]);
+        $this->mockFindByIDs([1, 2], $products);
+        $this->entityManager
             ->shouldReceive('persist')->once()->getMock()
             ->shouldReceive('flush')->once()->getMock();
 
         // act
-        $response = (new CreateOrder())($request, $entityManager);
+        $response = (new CreateOrder())($this->request, $this->entityManager);
 
         self::assertSame('{"id":null}', json_encode($response));
     }

@@ -8,7 +8,7 @@ use App\Entities\Product;
 use App\Services\ProductService;
 use Doctrine\ORM\EntityManagerInterface;
 use Faker\Generator;
-use PHPUnit\Framework\TestCase;
+use Tests\Unit\TestCase;
 
 class ProductServiceTest extends TestCase
 {
@@ -31,14 +31,14 @@ class ProductServiceTest extends TestCase
             ->andReturn(100.00, 9.99, 30.00)
             ->getMock();
         /** @var EntityManagerInterface $entityManager */
-        $entityManager = \Mockery::mock(EntityManagerInterface::class)
+        $this->entityManager
             ->shouldReceive('persist')
             ->times(3)
             ->getMock()
             ->shouldReceive('flush')
             ->once()
             ->getMock();
-        $service = new ProductService($entityManager, $faker);
+        $service = new ProductService($this->entityManager, $faker);
 
         // act
         /** @var Product[] $response */

@@ -8,16 +8,18 @@ use App\Http\Controllers\Products\CreateProducts;
 use App\Http\Views\SuccessResponse;
 use App\Services\ProductService;
 use Mockery\Mock;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Tests\Unit\TestCase;
 
 class CreateProductsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function testInvoke(): void
     {
         // arrange
-        /** @var Request $request */
-        $request = new Request();
         /** @var ProductService|Mock $productService */
         $productService = \Mockery::mock(ProductService::class)
             ->shouldReceive('createFakeProducts')
@@ -25,7 +27,7 @@ class CreateProductsTest extends TestCase
             ->getMock();
 
         // act
-        $response = (new CreateProducts())($request, $productService);
+        $response = (new CreateProducts())($this->request, $productService);
 
         // assert
         self::assertInstanceOf(SuccessResponse::class, $response);

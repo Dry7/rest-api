@@ -9,27 +9,24 @@ use App\Services\PaymentService;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentServiceTest extends TestCase
 {
+    private Client $client;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->client = \Mockery::mock(Client::class);
+    }
+
     public function testPay(): void
     {
         // arrange
         $order = new Order();
-        /** @var Client $client */
-        $client = \Mockery::mock(Client::class)
-            ->shouldReceive('get')
-            ->with('https://ya.ru')
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ResponseInterface::class)
-                ->shouldReceive('getStatusCode')
-                ->once()
-                ->andReturn(200)
-                ->getMock()
-            )
-            ->getMock();
-        $service = new PaymentService($client);
+        $this->mockHttpRequest('https://ya.ru', Response::HTTP_OK);
+        $service = new PaymentService($this->client);
 
         // assert
         self::assertTrue($service->pay($order));
@@ -39,20 +36,8 @@ class PaymentServiceTest extends TestCase
     {
         // arrange
         $order = new Order();
-        /** @var Client $client */
-        $client = \Mockery::mock(Client::class)
-            ->shouldReceive('get')
-            ->with('https://google.com')
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ResponseInterface::class)
-                ->shouldReceive('getStatusCode')
-                ->once()
-                ->andReturn(200)
-                ->getMock()
-            )
-            ->getMock();
-        $service = new PaymentService($client, 'https://google.com');
+        $this->mockHttpRequest('https://google.com', Response::HTTP_OK);
+        $service = new PaymentService($this->client, 'https://google.com');
 
         // assert
         self::assertTrue($service->pay($order));
@@ -62,22 +47,26 @@ class PaymentServiceTest extends TestCase
     {
         // arrange
         $order = new Order();
-        /** @var Client $client */
-        $client = \Mockery::mock(Client::class)
-            ->shouldReceive('get')
-            ->with('https://ya.ru')
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ResponseInterface::class)
-                ->shouldReceive('getStatusCode')
-                ->once()
-                ->andReturn(404)
-                ->getMock()
-            )
-            ->getMock();
-        $service = new PaymentService($client);
+        $this->mockHttpRequest('https://ya.ru', Response::HTTP_NOT_FOUND);
+        $service = new PaymentService($this->client);
 
         // assert
         self::assertFalse($service->pay($order));
+    }
+
+    private function mockHttpRequest(string $url, int $statusCode): void
+    {
+        $this->client
+            ->shouldReceive('get')
+            ->with($url)
+            ->once()
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ResponseInterface::class)
+                    ->shouldReceive('getStatusCode')
+                    ->once()
+                    ->andReturn($statusCode)
+                    ->getMock()
+            )
+            ->getMock();
     }
 }

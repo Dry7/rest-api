@@ -9,35 +9,23 @@ use App\Entities\Product;
 use App\Exceptions\OrderException;
 use App\Http\Controllers\Orders\PayOrder;
 use App\Http\Views\SuccessOrderPay;
-use App\Request;
 use App\Services\PaymentService;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
-use PHPUnit\Framework\TestCase;
+use Tests\Unit\TestCase;
 
 class PayOrderTest extends TestCase
 {
-    private Request $request;
-    private EntityManagerInterface $entityManager;
     private PaymentService $paymentService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->request = \Mockery::mock(Request::class);
-        $this->entityManager = \Mockery::mock(EntityManagerInterface::class);
         $this->paymentService = \Mockery::mock(PaymentService::class);
     }
 
     public function testEmptyOrderId(): void
     {
         // arrange
-        /** @var Request $request */
-        $this->request
-            ->shouldReceive('jsonContent')
-            ->andReturnNull()
-            ->once()
-            ->getMock();
+        $this->mockJsonContent(null);
 
         // assert
         self::expectException(OrderException::class);
@@ -50,12 +38,7 @@ class PayOrderTest extends TestCase
     public function testEmptySum(): void
     {
         // arrange
-        /** @var Request $request */
-        $this->request
-            ->shouldReceive('jsonContent')
-            ->andReturn((object)['id' => 1])
-            ->once()
-            ->getMock();
+        $this->mockJsonContent((object)['id' => 1]);
 
         // assert
         self::expectException(OrderException::class);
@@ -71,25 +54,8 @@ class PayOrderTest extends TestCase
         $order = new Order();
         $order->setStatus(Order::STATUS_PAID);
 
-        /** @var Request $request */
-        $this->request
-            ->shouldReceive('jsonContent')
-            ->andReturn((object)['id' => 1, 'sum' => 10.00])
-            ->once()
-            ->getMock();
-        $this->entityManager
-            ->shouldReceive('getRepository')
-            ->with(Order::class)
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ObjectRepository::class)
-                ->shouldReceive('find')
-                ->with(1)
-                ->once()
-                ->andReturn($order)
-                ->getMock()
-            )
-            ->getMock();
+        $this->mockJsonContent((object)['id' => 1, 'sum' => 10.00]);
+        $this->mockRepositoryFind(Order::class, 1, $order);
 
         // assert
         self::expectException(OrderException::class);
@@ -108,25 +74,8 @@ class PayOrderTest extends TestCase
         ];
         $order = Order::createFromProducts($products);
 
-        /** @var Request $request */
-        $this->request
-            ->shouldReceive('jsonContent')
-            ->andReturn((object)['id' => 2, 'sum' => 15.00])
-            ->once()
-            ->getMock();
-        $this->entityManager
-            ->shouldReceive('getRepository')
-            ->with(Order::class)
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ObjectRepository::class)
-                ->shouldReceive('find')
-                ->with(2)
-                ->once()
-                ->andReturn($order)
-                ->getMock()
-            )
-            ->getMock();
+        $this->mockJsonContent((object)['id' => 2, 'sum' => 15.00]);
+        $this->mockRepositoryFind(Order::class, 2, $order);
 
         // assert
         self::expectException(OrderException::class);
@@ -144,25 +93,8 @@ class PayOrderTest extends TestCase
             new Product('Name 4', 5.00),
         ]);
 
-        /** @var Request $request */
-        $this->request
-            ->shouldReceive('jsonContent')
-            ->andReturn((object)['id' => 3, 'sum' => 18.00])
-            ->once()
-            ->getMock();
-        $this->entityManager
-            ->shouldReceive('getRepository')
-            ->with(Order::class)
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ObjectRepository::class)
-                ->shouldReceive('find')
-                ->with(3)
-                ->once()
-                ->andReturn($order)
-                ->getMock()
-            )
-            ->getMock();
+        $this->mockJsonContent((object)['id' => 3, 'sum' => 18.00]);
+        $this->mockRepositoryFind(Order::class, 3, $order);
         $this->paymentService
             ->shouldReceive('pay')
             ->andReturnFalse();
@@ -183,25 +115,9 @@ class PayOrderTest extends TestCase
             new Product('Name 5', 4.00),
         ]);
 
-        /** @var Request $request */
-        $this->request
-            ->shouldReceive('jsonContent')
-            ->andReturn((object)['id' => 4, 'sum' => 7.00])
-            ->once()
-            ->getMock();
+        $this->mockJsonContent((object)['id' => 4, 'sum' => 7.00]);
+        $this->mockRepositoryFind(Order::class, 4, $order);
         $this->entityManager
-            ->shouldReceive('getRepository')
-            ->with(Order::class)
-            ->once()
-            ->andReturnUsing(
-                static fn () => \Mockery::mock(ObjectRepository::class)
-                ->shouldReceive('find')
-                ->with(4)
-                ->once()
-                ->andReturn($order)
-                ->getMock()
-            )
-            ->getMock()
             ->shouldReceive('persist')->with($order)->once()->getMock()
             ->shouldReceive('flush')->withNoArgs()->once()->getMock();
         $this->paymentService

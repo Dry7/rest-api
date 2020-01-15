@@ -40,5 +40,11 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"file_exists('docker-compose.override.yml') || copy('docker-compose.override.yml.dist', '.env');\""
+        ]
+    }
 }
