@@ -7,14 +7,14 @@ namespace App\Database\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version20200115065616 extends AbstractMigration
+final class Version20200115081500 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('ALTER TABLE orders ADD user_id INT NOT NULL');
+        $this->addSql('CREATE SEQUENCE orders_seq INCREMENT BY 1 MINVALUE 1 START 1');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +23,6 @@ final class Version20200115065616 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE orders DROP user_id');
+        $this->addSql('DROP SEQUENCE orders_seq CASCADE');
     }
 }
