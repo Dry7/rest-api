@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use App\Entities\Product;
+use App\Entities\User;
 use App\Request;
+use App\Services\AuthService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase as BaseTestCase;
@@ -14,12 +16,14 @@ class TestCase extends BaseTestCase
 {
     protected Request $request;
     protected EntityManagerInterface $entityManager;
+    protected AuthService $authService;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->request = \Mockery::mock(Request::class);
         $this->entityManager = \Mockery::mock(EntityManagerInterface::class);
+        $this->authService = \Mockery::mock(AuthService::class);
     }
 
     protected function mockJsonContent($return): void
@@ -62,6 +66,15 @@ class TestCase extends BaseTestCase
                     ->andReturn($return)
                     ->getMock()
             )
+            ->getMock();
+    }
+
+    protected function mockAuth(User $user): void
+    {
+        $this->authService
+            ->shouldReceive('getUser')
+            ->once()
+            ->andReturn($user)
             ->getMock();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Services\AuthService;
 use App\Services\Configuration\ConfigurationInterface;
 use App\Services\Configuration\ConfigurationService;
 use App\Services\DoctrineService;
@@ -39,6 +40,7 @@ class Application
         $container->set(Client::class, new Client());
         $container->set(ProductService::class, static fn (Container $container) => new ProductService($container->get(EntityManagerInterface::class), $container->get(Generator::class)));
         $container->set(PaymentService::class, static fn (Container $container) => new PaymentService($container->get(Client::class)));
+        $container->set(AuthService::class, new AuthService());
 
         self::$di = $container;
     }

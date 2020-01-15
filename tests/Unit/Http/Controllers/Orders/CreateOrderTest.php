@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Http\Controllers\Orders;
 
 use App\Entities\Product;
+use App\Entities\User;
 use App\Exceptions\OrderException;
 use App\Http\Controllers\Orders\CreateOrder;
 use Tests\Unit\TestCase;
@@ -26,7 +27,7 @@ class CreateOrderTest extends TestCase
         self::expectExceptionMessage('You must choose products');
 
         // act
-        (new CreateOrder())($this->request, $this->entityManager);
+        (new CreateOrder())($this->request, $this->entityManager, $this->authService);
     }
 
     public function testNotFoundProducts(): void
@@ -41,7 +42,7 @@ class CreateOrderTest extends TestCase
         self::expectExceptionMessage('Some products not found');
 
         // act
-        (new CreateOrder())($this->request, $this->entityManager);
+        (new CreateOrder())($this->request, $this->entityManager, $this->authService);
     }
 
     public function testInvoke(): void
@@ -56,9 +57,10 @@ class CreateOrderTest extends TestCase
         $this->entityManager
             ->shouldReceive('persist')->once()->getMock()
             ->shouldReceive('flush')->once()->getMock();
+        $this->mockAuth(new User());
 
         // act
-        $response = (new CreateOrder())($this->request, $this->entityManager);
+        $response = (new CreateOrder())($this->request, $this->entityManager, $this->authService);
 
         self::assertSame('{"id":null}', json_encode($response));
     }

@@ -27,6 +27,11 @@ class Order
     /** @Column(type="smallint", options={"default":0}) */
     private int $status = self::STATUS_NEW;
 
+    /** @Column(type="integer", name="user_id") */
+    private int $userId;
+
+    private string $userLogin;
+
     /**
      * @ManyToMany(targetEntity="Product", inversedBy="orders")
      * @JoinTable(name="orders_products")
@@ -61,6 +66,17 @@ class Order
     public function products(): Collection
     {
         return $this->products;
+    }
+
+    public function user(): User
+    {
+        return new User($this->userId ?? null, $this->userLogin ?? null);
+    }
+
+    public function setUser(User $user): void
+    {
+        $this->userId = $user->getId();
+        $this->userLogin = $user->getLogin();
     }
 
     public static function createFromProducts(array $products): self

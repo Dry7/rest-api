@@ -6,6 +6,7 @@ namespace Tests\Unit\Http\Controllers\Orders;
 
 use App\Entities\Order;
 use App\Entities\Product;
+use App\Entities\User;
 use App\Exceptions\OrderException;
 use App\Http\Controllers\Orders\PayOrder;
 use App\Http\Views\SuccessOrderPay;
@@ -32,7 +33,7 @@ class PayOrderTest extends TestCase
         self::expectExceptionMessage('Empty order ID');
 
         // act
-        (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
+        (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
     }
 
     public function testEmptySum(): void
@@ -45,7 +46,7 @@ class PayOrderTest extends TestCase
         self::expectExceptionMessage('Empty sum');
 
         // act
-        (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
+        (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
     }
 
     public function testInvalidStatus(): void
@@ -62,7 +63,28 @@ class PayOrderTest extends TestCase
         self::expectExceptionMessage('Invalid status');
 
         // act
-        (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
+        (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
+    }
+
+    public function testAccessDenied(): void
+    {
+        // arrange
+        $products = [
+            new Product('Name 1', 10.00),
+            new Product('Name 2', 4.99),
+        ];
+        $order = Order::createFromProducts($products);
+
+        $this->mockJsonContent((object)['id' => 2, 'sum' => 15.00]);
+        $this->mockRepositoryFind(Order::class, 2, $order);
+        $this->mockAuth(new User(2));
+
+        // assert
+        self::expectException(OrderException::class);
+        self::expectExceptionMessage('Access denied');
+
+        // act
+        (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
     }
 
     public function testInvalidSum(): void
@@ -76,13 +98,14 @@ class PayOrderTest extends TestCase
 
         $this->mockJsonContent((object)['id' => 2, 'sum' => 15.00]);
         $this->mockRepositoryFind(Order::class, 2, $order);
+        $this->mockAuth(new User());
 
         // assert
         self::expectException(OrderException::class);
         self::expectExceptionMessage('Invalid sum');
 
         // act
-        (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
+        (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
     }
 
     public function testFailedPay(): void
@@ -98,13 +121,14 @@ class PayOrderTest extends TestCase
         $this->paymentService
             ->shouldReceive('pay')
             ->andReturnFalse();
+        $this->mockAuth(new User());
 
         // assert
         self::expectException(OrderException::class);
         self::expectExceptionMessage('Failed payment');
 
         // act
-        (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
+        (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
     }
 
     public function testInvoke(): void
@@ -123,9 +147,10 @@ class PayOrderTest extends TestCase
         $this->paymentService
             ->shouldReceive('pay')
             ->andReturnTrue();
+        $this->mockAuth(new User());
 
         // act
-        $response = (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
+        $response = (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
 
         self::assertInstanceOf(SuccessOrderPay::class, $response);
         self::assertEquals('{"success":true}', json_encode($response));

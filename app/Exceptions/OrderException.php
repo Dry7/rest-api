@@ -13,6 +13,7 @@ class OrderException extends \Exception
     public const INVALID_SUM = 5;
     public const INVALID_STATUS = 6;
     public const FAILED_PAYMENT = 7;
+    public const ACCESS_DENIED = 8;
 
     public static function emptyProducts()
     {
@@ -47,5 +48,10 @@ class OrderException extends \Exception
     public static function failedPay()
     {
         return new static('Failed payment', self::FAILED_PAYMENT);
+    }
+
+    public static function accessDenied()
+    {
+        return new static('Access denied', self::ACCESS_DENIED);
     }
 }

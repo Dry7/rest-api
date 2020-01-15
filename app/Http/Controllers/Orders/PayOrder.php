@@ -9,6 +9,7 @@ use App\Entities\Product;
 use App\Exceptions\OrderException;
 use App\Http\Views\SuccessOrderPay;
 use App\Request;
+use App\Services\AuthService;
 use App\Services\PaymentService;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -17,7 +18,8 @@ class PayOrder
     public function __invoke(
         Request $request,
         EntityManagerInterface $entityManager,
-        PaymentService $paymentService
+        PaymentService $paymentService,
+        AuthService $authService
     ): SuccessOrderPay {
         $data = $request->jsonContent();
 
@@ -34,6 +36,10 @@ class PayOrder
 
         if ($order->getStatus() !== Order::STATUS_NEW) {
             throw OrderException::invalidStatus();
+        }
+
+        if ($order->user()->getId() !== $authService->getUser()->getId()) {
+            throw OrderException::accessDenied();
         }
 
         $sum = array_reduce(

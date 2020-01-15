@@ -6,6 +6,7 @@ namespace Tests\Unit\Entities;
 
 use App\Entities\Order;
 use App\Entities\Product;
+use App\Entities\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
@@ -14,39 +15,67 @@ class OrderTest extends TestCase
     public function testConstructor(): void
     {
         // arrange
-        $product = new Order();
+        $order = new Order();
 
         // assert
-        self::assertInstanceOf(ArrayCollection::class, $product->products());
+        self::assertInstanceOf(ArrayCollection::class, $order->products());
     }
 
     public function testGetAndSetId(): void
     {
         // arrange
-        $product = new Order();
-        $product->setId(43);
+        $order = new Order();
+        $order->setId(43);
 
         // assert
-        self::assertEquals($product->getId(), 43);
+        self::assertEquals(43, $order->getId());
     }
 
     public function testGetDefaultStatus(): void
     {
         // arrange
-        $product = new Order();
+        $order = new Order();
 
         // assert
-        self::assertEquals($product->getStatus(), Order::STATUS_NEW);
+        self::assertEquals(Order::STATUS_NEW, $order->getStatus());
     }
 
     public function testGetAndSetStatus(): void
     {
         // arrange
-        $product = new Order();
-        $product->setStatus(Order::STATUS_PAID);
+        $order = new Order();
+        $order->setStatus(Order::STATUS_PAID);
 
         // assert
-        self::assertEquals($product->getStatus(), Order::STATUS_PAID);
+        self::assertEquals(Order::STATUS_PAID, $order->getStatus());
+    }
+
+    public function testGetUser(): void
+    {
+        // arrange
+        $order = new Order();
+
+        // act
+        $user = $order->user();
+
+        // assert
+        self::assertEquals(1, $user->getId());
+        self::assertEquals('admin', $user->getLogin());
+    }
+
+    public function testSetUser(): void
+    {
+        // arrange
+        $user = new User(2, 'buyer');
+        $order = new Order();
+
+        // act
+        $order->setUser($user);
+        $user = $order->user();
+
+        // assert
+        self::assertEquals(2, $user->getId());
+        self::assertEquals('buyer', $user->getLogin());
     }
 
     public function testCreateFromProductsEmpty(): void
@@ -70,6 +99,6 @@ class OrderTest extends TestCase
         $response = Order::createFromProducts($products);
 
         // assert
-        self::assertSame($response->products()->toArray(), $products);
+        self::assertSame($products, $response->products()->toArray());
     }
 }

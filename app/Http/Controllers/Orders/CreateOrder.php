@@ -9,11 +9,16 @@ use App\Entities\Product;
 use App\Exceptions\OrderException;
 use App\Http\Views\OrderView;
 use App\Request;
+use App\Services\AuthService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CreateOrder
 {
-    public function __invoke(Request $request, EntityManagerInterface $entityManager): OrderView
+    public function __invoke(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        AuthService $authService
+    ): OrderView
     {
         $ids = $request->jsonContent();
 
@@ -29,7 +34,9 @@ class CreateOrder
             throw OrderException::someProductsNotFound();
         }
 
+        $user = $authService->getUser();
         $order = Order::createFromProducts($products);
+        $order->setUser($user);
 
         $entityManager->persist($order);
         $entityManager->flush();
