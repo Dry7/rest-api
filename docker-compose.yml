@@ -26,10 +26,13 @@ services:
       - postgres
 
   composer:
-    build: ./docker/composer
-    command: install
+    build: ./docker/php
+    command: composer install
     volumes:
-      - .:/app
+      - .:/var/www/rest-api
+    working_dir: /var/www/rest-api
+    depends_on:
+      - postgres
 
   phpunit:
     build: ./docker/php

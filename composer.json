@@ -44,7 +44,8 @@
     "scripts": {
         "post-autoload-dump": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@php -r \"file_exists('docker-compose.override.yml') || copy('docker-compose.override.yml.dist', 'docker-compose.override.yml');\""
+            "@php -r \"file_exists('docker-compose.override.yml') || copy('docker-compose.override.yml.dist', 'docker-compose.override.yml');\"",
+            "@php vendor/bin/doctrine-migrations migrations:migrate --configuration=config/migrations.php"
         ]
     }
 }
