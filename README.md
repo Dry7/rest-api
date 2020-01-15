@@ -21,10 +21,14 @@ Requirements
 
 Automatic installation
 ```
-docker-compose build && docker-compose up
+docker-compose build && docker-compose run --rm composer && docker-compose up
 ```
 
 Manual installation
 1. Copy docker-compose.override.yml.dist to docker-compose.override.yml
 2. Copy .env.example to .env
 3. Install composer dependencies (composer install)
+4. Run migrations
+```
+docker-compose exec php-fpm vendor/bin/doctrine-migrations migrations:migrate --configuration=config/migrations.php
+```

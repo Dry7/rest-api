@@ -34,6 +34,10 @@ class PayOrder
         /** @var Order $order */
         $order = $entityManager->getRepository(Order::class)->find($data->id);
 
+        if ($order === null) {
+            throw OrderException::notFound();
+        }
+
         if ($order->getStatus() !== Order::STATUS_NEW) {
             throw OrderException::invalidStatus();
         }

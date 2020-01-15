@@ -49,6 +49,23 @@ class PayOrderTest extends TestCase
         (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
     }
 
+    public function testNotFound(): void
+    {
+        // arrange
+        $order = new Order();
+        $order->setStatus(Order::STATUS_PAID);
+
+        $this->mockJsonContent((object)['id' => 122, 'sum' => 10.00]);
+        $this->mockRepositoryFind(Order::class, 122, null);
+
+        // assert
+        self::expectException(OrderException::class);
+        self::expectExceptionMessage('Not found');
+
+        // act
+        (new PayOrder())($this->request, $this->entityManager, $this->paymentService, $this->authService);
+    }
+
     public function testInvalidStatus(): void
     {
         // arrange
