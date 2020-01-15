@@ -9,7 +9,6 @@ use App\Http\Controllers\Orders\CreateOrder;
 use App\Http\Controllers\Orders\PayOrder;
 use Symfony\Component\HttpFoundation\Request;
 
-Application::createDI();
 $application = Application::getDI();
 
 $request = Request::createFromGlobals();

@@ -17,11 +17,11 @@ use GuzzleHttp\Client;
 
 class Application
 {
-    protected static Container $di;
+    protected static ?Container $di = null;
 
     public static function getDI(): Container
     {
-        if (is_null(static::$di)) {
+        if (static::$di === null) {
             static::createDI();
         }
 
