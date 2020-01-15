@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-class OrderRepository extends \Doctrine\ORM\EntityRepository
+use Doctrine\ORM\EntityRepository;
+
+class OrderRepository extends EntityRepository
 {
 }
