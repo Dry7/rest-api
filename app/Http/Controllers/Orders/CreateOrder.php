@@ -18,8 +18,7 @@ class CreateOrder
         Request $request,
         EntityManagerInterface $entityManager,
         AuthService $authService
-    ): OrderView
-    {
+    ): OrderView {
         $ids = $request->jsonContent();
 
         if (empty($ids)) {
