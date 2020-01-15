@@ -9,5 +9,6 @@ use Psr\Container\ContainerInterface;
 interface ConfigurationInterface extends ContainerInterface
 {
     public function get($path, $default = null);
+
     public function set($path, $value);
 }

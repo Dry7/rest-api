@@ -34,11 +34,11 @@ class Application
 
         $container->set(Request::class, Request::createFromGlobals());
         $container->set(ConfigurationInterface::class, new ConfigurationService());
-        $container->set(EntityManagerInterface::class, fn (Container $container) => (new DoctrineService($container->get(ConfigurationInterface::class)))->build());
+        $container->set(EntityManagerInterface::class, static fn (Container $container) => (new DoctrineService($container->get(ConfigurationInterface::class)))->build());
         $container->set(Generator::class, Factory::create());
         $container->set(Client::class, new Client());
-        $container->set(ProductService::class, fn (Container $container) => new ProductService($container->get(EntityManagerInterface::class), $container->get(Generator::class)));
-        $container->set(PaymentService::class, fn (Container $container) => new PaymentService($container->get(Client::class)));
+        $container->set(ProductService::class, static fn (Container $container) => new ProductService($container->get(EntityManagerInterface::class), $container->get(Generator::class)));
+        $container->set(PaymentService::class, static fn (Container $container) => new PaymentService($container->get(Client::class)));
 
         self::$di = $container;
     }

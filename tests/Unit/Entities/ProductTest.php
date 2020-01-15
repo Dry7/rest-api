@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         // arrange
         $product = new Product('Name 1', 10.00);
@@ -22,7 +22,7 @@ class ProductTest extends TestCase
         ], $product->toArray());
     }
 
-    public function testGetId()
+    public function testGetId(): void
     {
         // arrange
         $product = new Product('Test', 99.99);
@@ -32,7 +32,7 @@ class ProductTest extends TestCase
         self::assertEquals($product->getId(), 20);
     }
 
-    public function testSetId()
+    public function testSetId(): void
     {
         // arrange
         $product = new Product('Test', 99.99);
@@ -46,7 +46,7 @@ class ProductTest extends TestCase
         ], $product->toArray());
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         // arrange
         $product = new Product('Test', 99.99);
@@ -55,7 +55,7 @@ class ProductTest extends TestCase
         self::assertEquals($product->getName(), 'Test');
     }
 
-    public function testSetName()
+    public function testSetName(): void
     {
         // arrange
         $product = new Product('Test', 99.99);
@@ -69,7 +69,7 @@ class ProductTest extends TestCase
         ], $product->toArray());
     }
 
-    public function testGetPrice()
+    public function testGetPrice(): void
     {
         // arrange
         $product = new Product('Test', 99.99);
@@ -78,7 +78,7 @@ class ProductTest extends TestCase
         self::assertEquals($product->getPrice(), 99.99);
     }
 
-    public function testSetPrice()
+    public function testSetPrice(): void
     {
         // arrange
         $product = new Product('Test', 99.99);

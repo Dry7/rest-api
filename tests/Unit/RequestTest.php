@@ -15,7 +15,7 @@ class RequestTest extends TestCase
      * @param string $json
      * @param $expected
      */
-    public function testJsonContent(?string $json, $expected)
+    public function testJsonContent(?string $json, $expected): void
     {
         // arrange
         $request = new Request([], [], [], [], [], [], $json);

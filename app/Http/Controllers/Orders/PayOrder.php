@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Orders;
 use App\Entities\Order;
 use App\Entities\Product;
 use App\Exceptions\OrderException;
-use App\Http\Views\OrderView;
 use App\Http\Views\SuccessOrderPay;
 use App\Request;
 use App\Services\PaymentService;
@@ -19,8 +18,7 @@ class PayOrder
         Request $request,
         EntityManagerInterface $entityManager,
         PaymentService $paymentService
-    ): SuccessOrderPay
-    {
+    ): SuccessOrderPay {
         $data = $request->jsonContent();
 
         if (!isset($data->id)) {

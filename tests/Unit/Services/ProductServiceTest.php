@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class ProductServiceTest extends TestCase
 {
-    public function testCreateFakeProducts()
+    public function testCreateFakeProducts(): void
     {
         // arrange
         $products = [

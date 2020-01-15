@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class GetAllProductsTest extends TestCase
 {
-    public function testInvoke()
+    public function testInvoke(): void
     {
         // arrange
         $products = [
@@ -26,7 +26,8 @@ class GetAllProductsTest extends TestCase
         $entityManager = \Mockery::mock(EntityManagerInterface::class)
             ->shouldReceive('getRepository')
             ->once()
-            ->andReturnUsing(static fn () => \Mockery::mock(ObjectRepository::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ObjectRepository::class)
                     ->shouldReceive('findAll')
                     ->once()
                     ->andReturn($products)

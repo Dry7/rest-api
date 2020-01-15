@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class ApplicationTest extends TestCase
 {
-    public function testCreateDI()
+    public function testCreateDI(): void
     {
         // arrange
         $app = Application::getDI();

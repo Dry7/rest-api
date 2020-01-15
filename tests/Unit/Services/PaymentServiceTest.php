@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class PaymentServiceTest extends TestCase
 {
-    public function testPay()
+    public function testPay(): void
     {
         // arrange
         $order = new Order();
@@ -21,7 +21,8 @@ class PaymentServiceTest extends TestCase
             ->shouldReceive('get')
             ->with('https://ya.ru')
             ->once()
-            ->andReturnUsing(static fn () => \Mockery::mock(ResponseInterface::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ResponseInterface::class)
                 ->shouldReceive('getStatusCode')
                 ->once()
                 ->andReturn(200)
@@ -34,7 +35,7 @@ class PaymentServiceTest extends TestCase
         self::assertTrue($service->pay($order));
     }
 
-    public function testPayWithChangeEndpoint()
+    public function testPayWithChangeEndpoint(): void
     {
         // arrange
         $order = new Order();
@@ -43,7 +44,8 @@ class PaymentServiceTest extends TestCase
             ->shouldReceive('get')
             ->with('https://google.com')
             ->once()
-            ->andReturnUsing(static fn () => \Mockery::mock(ResponseInterface::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ResponseInterface::class)
                 ->shouldReceive('getStatusCode')
                 ->once()
                 ->andReturn(200)
@@ -56,7 +58,7 @@ class PaymentServiceTest extends TestCase
         self::assertTrue($service->pay($order));
     }
 
-    public function testFailedPay()
+    public function testFailedPay(): void
     {
         // arrange
         $order = new Order();
@@ -65,7 +67,8 @@ class PaymentServiceTest extends TestCase
             ->shouldReceive('get')
             ->with('https://ya.ru')
             ->once()
-            ->andReturnUsing(static fn () => \Mockery::mock(ResponseInterface::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ResponseInterface::class)
                 ->shouldReceive('getStatusCode')
                 ->once()
                 ->andReturn(404)

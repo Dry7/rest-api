@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services;
 
-use App\Services\Configuration\ConfigurationInterface;
 use App\Services\Configuration\ConfigurationService;
-use App\Services\DoctrineService;
-use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 
 class ConfigurationServiceTest extends TestCase
@@ -18,7 +15,7 @@ class ConfigurationServiceTest extends TestCase
      * @param string $key
      * @param $expected
      */
-    public function testGet(string $key, $expected)
+    public function testGet(string $key, $expected): void
     {
         // arrange
         $service = new ConfigurationService(__DIR__ . '/../../../fixtures/config/');
@@ -45,7 +42,7 @@ class ConfigurationServiceTest extends TestCase
      * @param string $key
      * @param bool $expected
      */
-    public function testHas(string $key, bool $expected)
+    public function testHas(string $key, bool $expected): void
     {
         // arrange
         $service = new ConfigurationService(__DIR__ . '/../../../fixtures/config/');
@@ -71,7 +68,7 @@ class ConfigurationServiceTest extends TestCase
      * @param string $key
      * @param bool $expected
      */
-    public function testSet(string $key, $expected)
+    public function testSet(string $key, $expected): void
     {
         // arrange
         $service = new ConfigurationService(__DIR__ . '/../../../fixtures/config/');

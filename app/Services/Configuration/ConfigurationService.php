@@ -50,7 +50,7 @@ class ConfigurationService implements ConfigurationInterface
         return $this->get($key, self::UNIQUE_VALUE) !== self::UNIQUE_VALUE;
     }
 
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $this->data[$key] = $value;
     }

@@ -29,7 +29,7 @@ class PayOrderTest extends TestCase
         $this->paymentService = \Mockery::mock(PaymentService::class);
     }
 
-    public function testEmptyOrderId()
+    public function testEmptyOrderId(): void
     {
         // arrange
         /** @var Request $request */
@@ -47,7 +47,7 @@ class PayOrderTest extends TestCase
         (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
     }
 
-    public function testEmptySum()
+    public function testEmptySum(): void
     {
         // arrange
         /** @var Request $request */
@@ -65,7 +65,7 @@ class PayOrderTest extends TestCase
         (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
     }
 
-    public function testInvalidStatus()
+    public function testInvalidStatus(): void
     {
         // arrange
         $order = new Order();
@@ -81,7 +81,8 @@ class PayOrderTest extends TestCase
             ->shouldReceive('getRepository')
             ->with(Order::class)
             ->once()
-            ->andReturnUsing(static fn() => \Mockery::mock(ObjectRepository::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ObjectRepository::class)
                 ->shouldReceive('find')
                 ->with(1)
                 ->once()
@@ -98,7 +99,7 @@ class PayOrderTest extends TestCase
         (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
     }
 
-    public function testInvalidSum()
+    public function testInvalidSum(): void
     {
         // arrange
         $products = [
@@ -117,7 +118,8 @@ class PayOrderTest extends TestCase
             ->shouldReceive('getRepository')
             ->with(Order::class)
             ->once()
-            ->andReturnUsing(static fn() => \Mockery::mock(ObjectRepository::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ObjectRepository::class)
                 ->shouldReceive('find')
                 ->with(2)
                 ->once()
@@ -134,7 +136,7 @@ class PayOrderTest extends TestCase
         (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
     }
 
-    public function testFailedPay()
+    public function testFailedPay(): void
     {
         // arrange
         $order = Order::createFromProducts([
@@ -152,7 +154,8 @@ class PayOrderTest extends TestCase
             ->shouldReceive('getRepository')
             ->with(Order::class)
             ->once()
-            ->andReturnUsing(static fn() => \Mockery::mock(ObjectRepository::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ObjectRepository::class)
                 ->shouldReceive('find')
                 ->with(3)
                 ->once()
@@ -172,7 +175,7 @@ class PayOrderTest extends TestCase
         (new PayOrder())($this->request, $this->entityManager, $this->paymentService);
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         // arrange
         $order = Order::createFromProducts([
@@ -190,7 +193,8 @@ class PayOrderTest extends TestCase
             ->shouldReceive('getRepository')
             ->with(Order::class)
             ->once()
-            ->andReturnUsing(static fn() => \Mockery::mock(ObjectRepository::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ObjectRepository::class)
                 ->shouldReceive('find')
                 ->with(4)
                 ->once()

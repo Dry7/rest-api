@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class OrderTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         // arrange
         $product = new Order();
@@ -20,7 +20,7 @@ class OrderTest extends TestCase
         self::assertInstanceOf(ArrayCollection::class, $product->products());
     }
 
-    public function testGetAndSetId()
+    public function testGetAndSetId(): void
     {
         // arrange
         $product = new Order();
@@ -30,7 +30,7 @@ class OrderTest extends TestCase
         self::assertEquals($product->getId(), 43);
     }
 
-    public function testGetDefaultStatus()
+    public function testGetDefaultStatus(): void
     {
         // arrange
         $product = new Order();
@@ -39,7 +39,7 @@ class OrderTest extends TestCase
         self::assertEquals($product->getStatus(), Order::STATUS_NEW);
     }
 
-    public function testGetAndSetStatus()
+    public function testGetAndSetStatus(): void
     {
         // arrange
         $product = new Order();
@@ -49,7 +49,7 @@ class OrderTest extends TestCase
         self::assertEquals($product->getStatus(), Order::STATUS_PAID);
     }
 
-    public function testCreateFromProductsEmpty()
+    public function testCreateFromProductsEmpty(): void
     {
         // act
         $response = Order::createFromProducts([]);
@@ -58,7 +58,7 @@ class OrderTest extends TestCase
         self::assertEmpty($response->products());
     }
 
-    public function testCreateFromProducts()
+    public function testCreateFromProducts(): void
     {
         // arrange
         $products = [

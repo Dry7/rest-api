@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class SuccessResponseTest extends TestCase
 {
-    public function testConstructor()
+    public function testConstructor(): void
     {
         // arrange
         $view = new SuccessResponse();

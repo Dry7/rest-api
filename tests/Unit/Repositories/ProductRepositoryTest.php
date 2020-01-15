@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class ProductRepositoryTest extends TestCase
 {
-    public function testFindByIDs()
+    public function testFindByIDs(): void
     {
         // arrange
         $product = new Product('Name 1', 100.00);
@@ -25,14 +25,14 @@ class ProductRepositoryTest extends TestCase
                 ->shouldReceive('getEntityPersister')
                 ->once()
                 ->andReturnUsing(
-                    static fn() => \Mockery::mock(EntityPersister::class)
+                    static fn () => \Mockery::mock(EntityPersister::class)
                         ->shouldReceive('loadAll')
                         ->once()
                         ->andReturn([$product])
                         ->getMock()
                 )
                 ->getMock()
-            )->getMock();
+        )->getMock();
         $repository = new ProductRepository($entityManager, new ClassMetadata('product'));
 
         self::assertSame([$product], $repository->findByIDs(1, 2, 3));

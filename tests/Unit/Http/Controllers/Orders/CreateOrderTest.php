@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class CreateOrderTest extends TestCase
 {
-    public function testEmptyProducts()
+    public function testEmptyProducts(): void
     {
         // arrange
         /** @var Request $request */
@@ -33,7 +33,7 @@ class CreateOrderTest extends TestCase
         (new CreateOrder())($request, $entityManager);
     }
 
-    public function testNotFoundProducts()
+    public function testNotFoundProducts(): void
     {
         // arrange
         $product = new Product('Name', 100.00);
@@ -47,7 +47,8 @@ class CreateOrderTest extends TestCase
             ->shouldReceive('getRepository')
             ->with(Product::class)
             ->once()
-            ->andReturnUsing(static fn() => \Mockery::mock(ObjectRepository::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ObjectRepository::class)
                 ->shouldReceive('findByIDs')
                 ->with(...[1, null, 2344234])
                 ->once()
@@ -64,7 +65,7 @@ class CreateOrderTest extends TestCase
         (new CreateOrder())($request, $entityManager);
     }
 
-    public function testInvoke()
+    public function testInvoke(): void
     {
         // arrange
         $products = [
@@ -81,7 +82,8 @@ class CreateOrderTest extends TestCase
             ->shouldReceive('getRepository')
             ->with(Product::class)
             ->once()
-            ->andReturnUsing(static fn() => \Mockery::mock(ObjectRepository::class)
+            ->andReturnUsing(
+                static fn () => \Mockery::mock(ObjectRepository::class)
                 ->shouldReceive('findByIDs')
                 ->with(...[1, 2])
                 ->once()

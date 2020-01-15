@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class DoctrineServiceTest extends TestCase
 {
-    public function testBuild()
+    public function testBuild(): void
     {
         // arrange
         /** @var ConfigurationInterface $config */
