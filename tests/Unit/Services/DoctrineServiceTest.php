@@ -13,7 +13,6 @@ class DoctrineServiceTest extends TestCase
 {
     public function testBuild()
     {
-        echo getenv('DATABASE_DBNAME');
         // arrange
         /** @var ConfigurationInterface $config */
         $config = \Mockery::mock(ConfigurationInterface::class)->shouldReceive('get')->once()->andReturn(require __DIR__ . '/../../../config/database.php')->getMock();
