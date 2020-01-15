@@ -12,10 +12,10 @@ class SuccessResponseTest extends TestCase
     public function testConstructor(): void
     {
         // arrange
-        $view = new SuccessResponse();
+        $view = new SuccessResponse('message');
 
         // assert
         self::assertInstanceOf(SuccessResponse::class, $view);
-        self::assertEquals('{"success":true}', json_encode($view));
+        self::assertEquals('{"success":true,"message":"message"}', json_encode($view));
     }
 }

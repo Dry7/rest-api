@@ -6,14 +6,16 @@ namespace App\Http\Controllers\Products;
 
 use App\Http\Views\SuccessResponse;
 use App\Services\ProductService;
-use Symfony\Component\HttpFoundation\Request;
 
 class CreateProducts
 {
-    public function __invoke(Request $request, ProductService $service): SuccessResponse
+    public function __invoke(ProductService $service): SuccessResponse
     {
-        $service->createFakeProducts();
+        $count = 0;
+        foreach ($service->createFakeProducts() as $product) {
+            ++$count;
+        }
 
-        return new SuccessResponse();
+        return new SuccessResponse($count . ' products added');
     }
 }

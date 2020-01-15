@@ -27,7 +27,7 @@ class CreateProductsTest extends TestCase
             ->getMock();
 
         // act
-        $response = (new CreateProducts())($this->request, $productService);
+        $response = (new CreateProducts())($productService);
 
         // assert
         self::assertInstanceOf(SuccessResponse::class, $response);

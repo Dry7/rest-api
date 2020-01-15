@@ -32,3 +32,9 @@ Manual installation
 ```
 docker-compose exec php-fpm vendor/bin/doctrine-migrations migrations:migrate --configuration=config/migrations.php
 ```
+
+Routes
+1. `GET /api/v1/products` All products list
+2. `POST /api/v1/products/create` Create fake products
+3. `POST /api/v1/orders` `POST body = [1,2,3]` Create order
+4. `POST /api/v1/orders/pay` `POST body {"id": 1,"sum": 9.99}` Pay order
